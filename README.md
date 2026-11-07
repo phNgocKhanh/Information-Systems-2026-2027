@@ -1,5 +1,5 @@
 USTH Information Systems 2026
 =============================
 
-* Luyện Phạm Ngọc Khánh
-  
+* Student name : Luyen Pham Ngoc Khanh 
+* Student ID : 2640014
