@@ -1,0 +1,157 @@
+REPORT 11 - NGO DATABASE DESIGN
+
+1. INTRODUCTION
+
+This database is designed to manage projects of a Non-Governmental Organization (NGO).
+
+The database stores information about head offices, projects, actions, cities, and investments.
+
+2. CONCEPTUAL MODEL
+
+The database has four main entities:
+
+- Head_offices: Stores information about head offices.
+- Projects: Stores information about projects.
+- Action: Stores actions belonging to projects.
+- City: Stores information about cities.
+
+Relationships:
+
+- One head office manages many projects (1:N).
+- One project contains many actions (1:N).
+- One action can take place in many cities (N:M).
+- One city can have many actions.
+- One project can invest in many cities (N:M).
+
+Two additional tables are used to solve the many-to-many relationships:
+
+- Action_of_city
+- Project_city_budget
+
+Assumptions:
+
+- Each project is managed by one head office.
+- Each action belongs to one project.
+- Each project-city pair has one investment amount.
+
+Database diagram: NGO_Diagram.jpg
+
+3. LOGICAL MODEL
+
+The database contains six tables.
+
+Table 1: Head_offices
+
+Primary Key: head_office_id
+
+Attributes:
+head_office_id, city, country, address, phone, director_name
+
+Table 2: Projects
+
+Primary Key: project_id
+
+Foreign Key:
+office_id references Head_offices(head_office_id)
+
+Attributes:
+project_id, code, title, start_date, end_date,
+budget, person_in_charge, office_id
+
+Table 3: Action
+
+Primary Key: action_id
+
+Foreign Key:
+project_id references Projects(project_id)
+
+Attributes:
+action_id, project_id, description
+
+Table 4: City
+
+Primary Key: city_id
+
+Attributes:
+city_id, city_name, country, population
+
+Table 5: Action_of_city
+
+Composite Primary Key:
+(action_id, city_id)
+
+Foreign Keys:
+action_id references Action(action_id)
+city_id references City(city_id)
+
+Table 6: Project_city_budget
+
+Composite Primary Key:
+(project_id, city_id)
+
+Foreign Keys:
+project_id references Projects(project_id)
+city_id references City(city_id)
+
+Attributes:
+project_id, city_id, investment
+
+4. PHYSICAL MODEL
+
+MySQL 8.4 is used to implement the database.
+
+Table: Head_offices
+
+head_office_id  INT             PRIMARY KEY
+city            VARCHAR(100)
+country         VARCHAR(100)
+address         VARCHAR(100)
+phone           VARCHAR(100)
+director_name   VARCHAR(100)
+
+Table: Projects
+
+project_id        INT             PRIMARY KEY
+code              VARCHAR(100)
+title             VARCHAR(100)
+start_date        DATE
+end_date          DATE
+budget            DECIMAL(15,2)
+person_in_charge  VARCHAR(100)
+office_id         INT             FOREIGN KEY
+
+Table: Action
+
+action_id       INT             PRIMARY KEY
+project_id      INT             FOREIGN KEY
+description     VARCHAR(100)
+
+Table: City
+
+city_id         INT             PRIMARY KEY
+city_name       VARCHAR(100)
+country         VARCHAR(100)
+population      INT
+
+Table: Action_of_city
+
+action_id       INT             PRIMARY KEY, FOREIGN KEY
+city_id         INT             PRIMARY KEY, FOREIGN KEY
+
+Composite Primary Key: (action_id, city_id)
+
+Table: Project_city_budget
+
+project_id      INT             PRIMARY KEY, FOREIGN KEY
+city_id         INT             PRIMARY KEY, FOREIGN KEY
+investment      DECIMAL(15,2)
+
+Composite Primary Key: (project_id, city_id)
+
+5. SQL COMMANDS
+
+[To be completed after writing ngo.sql]
+
+6. DESCRIBE COMMANDS AND OUTPUTS
+
+[To be completed after creating the database in MySQL]
